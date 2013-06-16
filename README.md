@@ -14,7 +14,7 @@ The code for implementing nestedSortable is borrowed from the dead project at <h
 
 ## Installation
 
-Download from <https://github.com/awecms/menu/downloads>
+Download from <https://github.com/xtranophilist/yii-menu/downloads>
 
 Extract the contents of the archive to menu folder inside modules.
 
