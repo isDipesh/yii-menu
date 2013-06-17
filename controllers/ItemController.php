@@ -1,13 +1,29 @@
-
 <?php
 
 class ItemController extends Controller {
 
+    public function filters() {
+        return array(
+            'accessControl',
+        );
+    }
+
+    public function accessRules() {
+        return array(
+            array('allow',
+                'users' => array('admin'),
+            ),
+            array('deny',
+                'users' => array('*'),
+            ),
+        );
+    }
+
     public function actionIndex($id) {
         $activeId = isset($_GET['activeId']) ? $_GET['activeId'] : '';
-        $model = MenuItem::model()->findAllByAttributes(array('menu_id' => $id));
+        $items = MenuItem::model()->findAllByAttributes(array('menu_id' => $id));
         $this->render('index', array(
-            'model' => $model,
+            'items' => $items,
             'id' => $id,
             'activeId' => $activeId
         ));
@@ -21,6 +37,8 @@ class ItemController extends Controller {
                 $model->menu = $_POST['MenuItem']['menu'];
             if (isset($_POST['MenuItem']['parent']))
                 $model->parent = $_POST['MenuItem']['parent'];
+
+            $model->link = $_POST['MenuItem'][$_POST['MenuItem']['type']];
 
             if (isset($_POST['MenuItem']['role']))
                 $model->role = implode(',', $_POST['MenuItem']['role']);
@@ -50,8 +68,13 @@ class ItemController extends Controller {
         $model = $this->loadModel(key($_GET));
         if (isset($_POST['MenuItem'])) {
             $model->setAttributes($_POST['MenuItem']);
+            if (!isset($_POST['MenuItem']['target'])) {
+                $model->target = NULL;
+            }
             $model->menu = $_POST['MenuItem']['menu'];
             $model->parent = $_POST['MenuItem']['parent'];
+
+            $model->link = $_POST['MenuItem'][$_POST['MenuItem']['type']];
 
             if (isset($_POST['MenuItem']['role']))
                 $model->role = implode(',', $_POST['MenuItem']['role']);
@@ -83,7 +106,7 @@ class ItemController extends Controller {
             }
 
             if (!Yii::app()->getRequest()->getIsAjaxRequest()) {
-                $this->redirect(array('/' . $this->module->id . '/item/' . $menuId));
+                $this->redirect(array('/' . $this->module->id . '/item?id=' . $menuId));
             }
         }
         else

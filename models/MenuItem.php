@@ -10,9 +10,10 @@
  * @property integer $parent_id
  * @property string $name
  * @property integer $enabled
- * @property integer $content_id
+ * @property string $target
  * @property string $description
  * @property string $link
+ * @property string $type
  * @property string $role
  *
  * Relations of table "menu_item" available as properties of the model:
@@ -37,11 +38,13 @@ class MenuItem extends CActiveRecord {
     public function rules() {
         return array(
             array('name', 'required'),
-            array('menu_id, parent_id, enabled, content_id, link', 'default', 'setOnEmpty' => true, 'value' => null),
-            array('menu_id, enabled, content_id', 'numerical', 'integerOnly' => true),
+            array('menu_id, parent_id, enabled, target, link, type, role', 'default', 'setOnEmpty' => true, 'value' => null),
+            array('menu_id, enabled', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 128),
-            array('link', 'safe'),
-            array('id, menu_id, parent_id, name, enabled, content_id, description, link, role', 'safe', 'on' => 'search'),
+            array('target', 'length', 'max' => 10),
+            array('type', 'length', 'max' => 50),
+            array('description, link, role', 'safe'),
+            array('id, menu_id, parent_id, depth, lft, rgt, name, enabled, target, description, link, type, role', 'safe', 'on' => 'search'),
         );
     }
 
@@ -70,10 +73,11 @@ class MenuItem extends CActiveRecord {
             'parent_id' => Yii::t('app', 'Parent'),
             'name' => Yii::t('app', 'Name'),
             'enabled' => Yii::t('app', 'Enabled'),
-            'content_id' => Yii::t('app', 'Content'),
+            'target' => Yii::t('app', 'Target'),
             'description' => Yii::t('app', 'Description'),
             'link' => Yii::t('app', 'Link/Path'),
             'role' => Yii::t('app', 'Visible to:'),
+            'type' => Yii::t('app', 'Type'),
         );
     }
 
@@ -85,10 +89,11 @@ class MenuItem extends CActiveRecord {
         $criteria->compare('parent_id', $this->parent_id);
         $criteria->compare('name', $this->name, true);
         $criteria->compare('enabled', $this->enabled);
-        $criteria->compare('content_id', $this->content_id);
+        $criteria->compare('target', $this->target);
         $criteria->compare('description', $this->description, true);
         $criteria->compare('link', $this->link, true);
         $criteria->compare('role', $this->role, true);
+        $criteria->compare('type', $this->type, true);
 
         return new CActiveDataProvider(get_class($this), array(
                     'criteria' => $criteria,

@@ -2,10 +2,21 @@
 
 class MenuController extends Controller {
 
-    public function actionView($id) {
-        $this->render('view', array(
-            'model' => $this->loadModel($id, 'Menu'),
-        ));
+    public function filters() {
+        return array(
+            'accessControl',
+        );
+    }
+
+    public function accessRules() {
+        return array(
+            array('allow',
+                'users' => array('admin'),
+            ),
+            array('deny',
+                'users' => array('*'),
+            ),
+        );
     }
 
     public function actionCreate() {
@@ -64,7 +75,7 @@ class MenuController extends Controller {
             }
 
             if (!Yii::app()->getRequest()->getIsAjaxRequest()) {
-                $this->redirect(array('admin'));
+                $this->redirect(array('/menu'));
             }
         }
         else
@@ -101,7 +112,7 @@ class MenuController extends Controller {
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('/menu'));
         }
         else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');

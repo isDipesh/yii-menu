@@ -9,13 +9,13 @@ $this->menu = array(
 );
 ?>
 
-<a href="<?php echo $this->createUrl('/' . $this->module->id . '/item/create/' . $id); ?>"><?php echo MenuModule::t("Create New Menu Item", array(), "actions"); ?></a>
+<a class="button" href="<?php echo $this->createUrl('/' . $this->module->id . '/item/create/' . $id); ?>"><?php echo MenuModule::t("Create New Menu Item", array(), "actions"); ?></a>
 <br/><br/>
 
 <?php Yii::app()->clientScript->registerScriptFile($this->module->assetsDirectory . "/libs/json/json2.min.js"); ?>
-<?php $this->widget('mext.AtNestedSortable') ?>	
+
 <?php
-$this->widget('mext.AtHerList', array('model' => $model, 'activeId' => $activeId));
+$this->widget('application.modules.menu.extensions.ItemList', array('items' => $items, 'activeId' => $activeId));
 ?>
 
 <script type="text/javascript">
