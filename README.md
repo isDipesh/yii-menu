@@ -37,6 +37,8 @@ Add the components and models required to your imports section
             ),
 ~~~
 
+Import menu.sql to install the database schema.
+
 ## Usage
 
 Browse to /menu to create menu and menu items.  
