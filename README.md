@@ -37,6 +37,16 @@ Add the components and models required to your imports section
             ),
 ~~~
 
+Add Metadata class to components
+
+~~~
+'components'=>array(
+...
+        	'metadata' => array('class' => 'Metadata'),
+...
+),
+~~~
+
 Import menu.sql to install the database schema.
 
 ## Usage
