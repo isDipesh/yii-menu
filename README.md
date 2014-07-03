@@ -3,6 +3,8 @@ yii-menu
 
 Menu Management for Yii Framework
 
+**[Note: This extension isn't maintained any more.]**
+
 This module allows you to create and edit themeable menus with nested items.
 This work is inspired from menu management in Wordpress and tries to provide a similar interface to drag and drop items for setting its order and depth.
 
